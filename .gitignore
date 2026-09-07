@@ -1,0 +1,6 @@
+sentiment_data.csv
+*.csv
+*.zip
+*.h5
+__pycache__/
+venv/

@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>My AI Project</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            font-family:'Poppins',sans-serif;
+            background:#050816;
+            color:white;
+            overflow-x:hidden;
+        }
+
+        /* GRID BACKGROUND */
+        body::before{
+            content:"";
+            position:fixed;
+            width:100%;
+            height:100%;
+            background-image:
+            linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+            background-size:50px 50px;
+            z-index:-1;
+        }
+
+        /* NAVBAR */
+
+        .navbar{
+            width:100%;
+            padding:25px 60px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            border-bottom:1px solid rgba(255,255,255,0.08);
+            background:rgba(0,0,0,0.4);
+            backdrop-filter:blur(10px);
+            position:sticky;
+            top:0;
+            z-index:100;
+        }
+
+        .logo{
+            font-size:42px;
+            font-weight:800;
+            background:linear-gradient(to right,#7b61ff,#ff5fd2);
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
+        }
+
+        .nav-links{
+            display:flex;
+            gap:50px;
+            align-items:center;
+        }
+
+        .nav-links a{
+            color:#b5b5c3;
+            text-decoration:none;
+            font-size:18px;
+            transition:0.3s;
+        }
+
+        .nav-links a:hover{
+            color:white;
+        }
+
+        .ai-btn{
+            background:linear-gradient(to right,#7b61ff,#ff5fd2);
+            padding:12px 28px;
+            border:none;
+            border-radius:30px;
+            color:white;
+            font-weight:600;
+            cursor:pointer;
+            font-size:16px;
+        }
+
+        /* MAIN CONTAINER */
+
+        .container{
+            width:90%;
+            max-width:1300px;
+            margin:auto;
+            padding:70px 0;
+        }
+
+        .section{
+            margin-bottom:90px;
+        }
+
+        .small-title{
+            color:#7b61ff;
+            font-size:18px;
+            font-weight:600;
+            margin-bottom:20px;
+            letter-spacing:2px;
+        }
+
+        .main-title{
+            font-size:72px;
+            line-height:1.1;
+            font-weight:800;
+            margin-bottom:20px;
+        }
+
+        .description{
+            color:#9fa3b0;
+            font-size:22px;
+            max-width:800px;
+            line-height:1.6;
+            margin-bottom:40px;
+        }
+
+        /* CARD */
+
+        .card{
+            background:rgba(255,255,255,0.03);
+            border:1px solid rgba(255,255,255,0.08);
+            border-radius:35px;
+            padding:40px;
+            backdrop-filter:blur(10px);
+        }
+
+        /* DROP AREA */
+
+        .upload-box{
+            border:2px dashed rgba(255,255,255,0.15);
+            border-radius:30px;
+            padding:80px 40px;
+            text-align:center;
+            transition:0.3s;
+        }
+
+        .upload-box:hover{
+            border-color:#7b61ff;
+            background:rgba(123,97,255,0.08);
+        }
+
+        .upload-icon{
+            font-size:80px;
+            margin-bottom:20px;
+        }
+
+        .upload-title{
+            font-size:36px;
+            font-weight:700;
+            margin-bottom:10px;
+        }
+
+        .upload-sub{
+            color:#9fa3b0;
+            font-size:18px;
+            margin-bottom:30px;
+        }
+
+        input[type="file"]{
+            display:none;
+        }
+
+        .custom-upload{
+            display:inline-block;
+            background:linear-gradient(to right,#7b61ff,#ff5fd2);
+            padding:16px 35px;
+            border-radius:14px;
+            cursor:pointer;
+            font-size:18px;
+            font-weight:600;
+            transition:0.3s;
+        }
+
+        .custom-upload:hover{
+            transform:translateY(-3px);
+        }
+
+        /* BUTTON */
+
+        button{
+            margin-top:25px;
+            background:linear-gradient(to right,#7b61ff,#ff5fd2);
+            border:none;
+            color:white;
+            padding:15px 35px;
+            border-radius:14px;
+            font-size:18px;
+            font-weight:600;
+            cursor:pointer;
+            transition:0.3s;
+        }
+
+        button:hover{
+            transform:translateY(-3px);
+        }
+
+        /* TEXTAREA */
+
+        textarea{
+            width:100%;
+            background:#0f1324;
+            border:1px solid rgba(255,255,255,0.1);
+            border-radius:20px;
+            padding:20px;
+            color:white;
+            font-size:17px;
+            resize:none;
+            min-height:150px;
+            outline:none;
+        }
+
+        textarea:focus{
+            border-color:#7b61ff;
+        }
+
+        /* RESULT BOX */
+
+        .result{
+            margin-top:30px;
+            background:#0f1324;
+            border-left:5px solid #7b61ff;
+            padding:25px;
+            border-radius:15px;
+        }
+
+        .result p{
+            margin-bottom:10px;
+            line-height:1.7;
+        }
+
+        .result strong{
+            color:#ff5fd2;
+        }
+
+        img{
+            width:100%;
+            max-width:400px;
+            margin-top:20px;
+            border-radius:20px;
+        }
+
+        .error{
+            margin-top:20px;
+            color:#ff4d6d;
+            font-weight:600;
+        }
+
+        /* RESPONSIVE */
+
+        @media(max-width:900px){
+
+            .navbar{
+                padding:20px;
+            }
+
+            .logo{
+                font-size:28px;
+            }
+
+            .nav-links{
+                display:none;
+            }
+
+            .main-title{
+                font-size:48px;
+            }
+
+            .description{
+                font-size:18px;
+            }
+
+            .card{
+                padding:25px;
+            }
+
+            .upload-title{
+                font-size:28px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <div class="navbar">
+
+        <div class="logo">AI Final Project</div>
+
+        <div class="nav-links">
+            <a href="#classifier">Classifier</a>
+            <a href="#sentiment">Sentiment</a>
+            <a href="#agent">AI Agent</a>
+        </div>
+
+        <button class="ai-btn">AI Suite</button>
+
+    </div>
+
+    <div class="container">
+
+        <!-- IMAGE CLASSIFIER -->
+
+        <div class="section" id="classifier">
+
+            <div class="small-title">MODULE 01</div>
+
+            <div class="main-title">
+                Image Classifier
+            </div>
+
+            <div class="description">
+                Upload any image to classify it among three animal categories using a CNN-based vision model.
+            </div>
+
+            <div class="card">
+
+                <form action="/predict_image" method="post" enctype="multipart/form-data">
+
+                    <div class="upload-box">
+
+                        <div class="upload-icon">🖼️</div>
+
+                        <div class="upload-title">
+                            Drop an image here
+                        </div>
+
+                        <div class="upload-sub">
+                            or click to browse — supports JPG, PNG, WEBP
+                        </div>
+
+                        <label for="file-upload" class="custom-upload">
+                            Choose Image
+                        </label>
+
+                        <input
+                            id="file-upload"
+                            type="file"
+                            name="file"
+                            accept=".jpg,.jpeg,.png"
+                            required
+                        >
+
+                        <br>
+
+                        <button type="submit">
+                            Predict Image
+                        </button>
+
+                    </div>
+
+                </form>
+
+                
+                {% if image_prediction %}
+<div class="result">
+
+    <p>
+        <strong>Prediction:</strong>
+        {{ image_prediction }}
+    </p>
+
+    <img src="{{ image_path }}" alt="Uploaded Image">
+
+</div>
+{% endif %}
+
+{% if image_error %}
+<p class="error">
+    {{ image_error }}
+</p>
+{% endif %}
+
+            </div>
+
+        </div>
+
+        <!-- NLP SENTIMENT -->
+
+        <div class="section" id="sentiment">
+
+            <div class="small-title">MODULE 02</div>
+
+            <div class="main-title">
+                Sentiment Analysis
+            </div>
+
+            <div class="description">
+                Enter any sentence and the NLP model will classify the emotion as Positive, Negative, or Neutral.
+            </div>
+
+            <div class="card">
+
+                <form action="/predict_sentiment" method="post">
+
+                    <textarea
+                        name="nlp_text"
+                        placeholder="Type your sentence here..."
+                        required
+                    ></textarea>
+
+                    <button type="submit">
+                        Analyze Sentiment
+                    </button>
+
+                </form>
+
+                {% if nlp_prediction %}
+                <div class="result">
+
+                    <p>
+                        <strong>Input:</strong>
+                        {{ user_text }}
+                    </p>
+
+                    <p>
+                        <strong>Sentiment:</strong>
+                        {{ nlp_prediction }}
+                    </p>
+
+                </div>
+                {% endif %}
+
+                {% if nlp_error %}
+                <p class="error">{{ nlp_error }}</p>
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        <!-- AI AGENT -->
+
+        <div class="section" id="agent">
+
+            <div class="small-title">MODULE 03</div>
+
+            <div class="main-title">
+                Gemini AI Agent
+            </div>
+
+            <div class="description">
+                Ask anything from the AI assistant powered by Gemini 2.0 integration.
+            </div>
+
+            <div class="card">
+
+                <form action="/ask_agent" method="post">
+
+                    <textarea
+                        name="agent_prompt"
+                        placeholder="Ask the AI anything..."
+                        required
+                    ></textarea>
+
+                    <button type="submit">
+                        Ask AI Agent
+                    </button>
+
+                </form>
+
+                {% if agent_response %}
+                <div class="result">
+
+                    <p>
+                        <strong>Your Prompt:</strong>
+                        {{ user_prompt }}
+                    </p>
+
+                    <p>
+                        <strong>AI Response:</strong>
+                    </p>
+
+                    <div style="
+                        background:#111827;
+                        padding:20px;
+                        border-radius:15px;
+                        margin-top:10px;
+                        line-height:1.8;
+                        color:#d1d5db;
+                        white-space:pre-wrap;
+                    ">
+                        {{ agent_response }}
+                    </div>
+
+                </div>
+                {% endif %}
+
+                {% if agent_error %}
+                <p class="error">{{ agent_error }}</p>
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
