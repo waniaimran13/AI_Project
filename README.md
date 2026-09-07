@@ -22,7 +22,6 @@ AI_Animal_Classifier/
 ├── static/              # CSS, JS, and image assets
 ├── templates/           # Flask HTML files
 ├── app.py               # Main Flask application logic
-├── sentiment_data.csv   # Dataset used for sentiment analysis
 ├── .gitignore           # Git ignore configuration
 └── README.md            # Project documentation
 🚀 How to Run Locally
